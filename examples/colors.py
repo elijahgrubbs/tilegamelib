@@ -1,10 +1,11 @@
 
 from tilegamelib import Frame, Vector, TileFactory, TiledMap
-from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
+from tilegamelib import EventGenerator, ExitListener, FigureMoveListener, FigureColorListener
 from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move import wait_for_move
 from tilegamelib.game import Game
+from tilegamelib.vector import RED, BLUE, YELLOW
 from pygame import Rect
 import pygame
 import time
@@ -20,14 +21,21 @@ FRUITMAP = """##########
 ##########"""
 
 
+FIGURE_COLORS = {
+    RED: 'b.pac_up',
+    BLUE: 'b.pac_down',
+    YELLOW: 'b.pac_left',
+}
+
+
 class CollectFruit:
 
     def __init__(self, screen):
         self.screen = screen
         self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory('data/tiles.conf')
-        self.tm = TiledMap(self.frame, tile_factory)
-        self.player = Sprite(self.frame, tile_factory.get('b.pac_right'),
+        self.tile_factory = TileFactory('data/tiles.conf')
+        self.tm = TiledMap(self.frame, self.tile_factory)
+        self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
                              Vector(4, 1), speed=2)
         self.tm.set_map(FRUITMAP)
         self.draw()
@@ -48,6 +56,9 @@ class CollectFruit:
         wait_for_move(self.player, self.screen, self.draw, 0.01)
         self.check_player_square()
 
+    def set_color(self, color):
+        self.player.tile = self.tile_factory.get(FIGURE_COLORS[color])
+
     def check_player_square(self):
         field = self.tm.at(self.player.pos)
         if field == '*':
@@ -62,6 +73,7 @@ class CollectFruit:
     def run(self):
         self.events = EventGenerator()
         self.events.add_listener(FigureMoveListener(self.move))
+        self.events.add_listener(FigureColorListener(self.set_color))
         self.events.add_listener(ExitListener(self.events.exit_signalled))
         with draw_timer(self, self.events):
             self.events.event_loop()
