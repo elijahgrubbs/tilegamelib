@@ -58,5 +58,8 @@ DOWNRIGHT = Vector(1, 1)
 RED = 0
 BLUE = 1
 YELLOW = 2
+PURPLE = 3
+GREEN = 4
+ORANGE = 5
 
 

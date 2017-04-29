@@ -5,7 +5,7 @@ from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move import wait_for_move
 from tilegamelib.game import Game
-from tilegamelib.vector import RED, BLUE, YELLOW
+from tilegamelib.vector import RED, BLUE, YELLOW, PURPLE, GREEN, ORANGE
 from pygame import Rect
 import pygame
 import time
@@ -25,6 +25,9 @@ FIGURE_COLORS = {
     RED: 'b.pac_up',
     BLUE: 'b.pac_down',
     YELLOW: 'b.pac_left',
+    PURPLE: 'b.ghost',
+    GREEN: 'b.tail',
+    ORANGE: 'b.dot'
 }
 
 

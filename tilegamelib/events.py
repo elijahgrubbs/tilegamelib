@@ -77,6 +77,7 @@ class EventGenerator:
         Called each time a key is pressed down.
         Makes key repeats
         """
+
         if self.lastkey == event.key:
             if self.key_repeat_delay > 0:
                 self.key_repeat_delay -= 1
@@ -85,6 +86,20 @@ class EventGenerator:
                 for l in self.listeners:
                     l.handle_key(self.lastkey)
         else:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_a] and event.key == pygame.K_s:
+                event.key = pygame.K_j
+            if keys[pygame.K_s] and event.key == pygame.K_a:
+                event.key = pygame.K_j
+            if keys[pygame.K_s] and event.key == pygame.K_d:
+                event.key = pygame.K_k
+            if keys[pygame.K_d] and event.key == pygame.K_s:
+                event.key = pygame.K_k
+            if keys[pygame.K_d] and event.key == pygame.K_a:
+                event.key = pygame.K_l
+            if keys[pygame.K_a] and event.key == pygame.K_d:
+                event.key = pygame.K_l
+
             self.key_repeat_delay = self.key_repeat
             for l in self.listeners:
                 l.handle_key(event.key)

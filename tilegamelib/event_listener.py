@@ -1,6 +1,6 @@
-from .vector import Vector, UP, DOWN, LEFT, RIGHT, RED, BLUE, YELLOW
+from .vector import Vector, UP, DOWN, LEFT, RIGHT, RED, BLUE, YELLOW, PURPLE, GREEN, ORANGE
 from pygame import K_ESCAPE, K_RETURN, K_DELETE
-from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN, K_a, K_s, K_d
+from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN, K_a, K_s, K_d, K_j, K_k, K_l
 
 
 class EventListener:
@@ -107,7 +107,7 @@ class FigureMoveListener(EventListener):
         self.callback(RIGHT)
 
 
-COLOR_KEYS = [K_a, K_s, K_d]
+COLOR_KEYS = [K_a, K_s, K_d, K_j, K_k, K_l]
 
 
 class FigureColorListener(EventListener):
@@ -118,6 +118,9 @@ class FigureColorListener(EventListener):
             keys[0]: self.red,
             keys[1]: self.blue,
             keys[2]: self.yellow,
+            keys[3]: self.purple,
+            keys[4]: self.green,
+            keys[5]: self.orange
         })
         self.callback = callback
 
@@ -129,6 +132,15 @@ class FigureColorListener(EventListener):
 
     def yellow(self):
         self.callback(YELLOW)
+
+    def purple(self):
+        self.callback(PURPLE)
+
+    def green(self):
+        self.callback(GREEN)
+
+    def orange(self):
+        self.callback(ORANGE)
 
 
 class ExitListener(EventListener):
