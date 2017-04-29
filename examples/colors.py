@@ -31,11 +31,11 @@ FIGURE_COLORS = {
 }
 
 
-class CollectFruit:
+class Colors:
 
     def __init__(self, screen):
         self.screen = screen
-        self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
+        self.frame = Frame(self.screen, Rect(0, 0, 640, 640))
         self.tile_factory = TileFactory('data/tiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
@@ -83,5 +83,5 @@ class CollectFruit:
 
 
 if __name__ == '__main__':
-    game = Game('data/collect_fruit.conf', CollectFruit)
+    game = Game('data/collect_fruit.conf', Colors) #Change to data/colors.conf after creating title screen
     game.run()
