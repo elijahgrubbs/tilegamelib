@@ -106,6 +106,20 @@ class EventGenerator:
         self.lastkey = event.key
 
     def key_released(self, event):
+        keys = pygame.key.get_pressed()
+        handle = 0
+        if keys[pygame.K_a]:
+            event.key = pygame.K_a
+            handle = 1
+        if keys[pygame.K_s]:
+            event.key = pygame.K_s
+            handle = 1
+        if keys[pygame.K_d]:
+            event.key = pygame.K_d
+            handle = 1
+        if handle == 1:
+            for l in self.listeners:
+                l.handle_key(event.key)
         """Called each time a key is released."""
         self.lastkey = 0
 
