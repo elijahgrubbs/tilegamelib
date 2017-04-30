@@ -55,6 +55,24 @@ class Colors:
     def move(self, direction):
         nearpos = self.player.pos + direction
         near = self.tm.at(nearpos)
+        if near == 'r':
+            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[RED]):
+                return # Currently makes it so player can't move unless changed to RED player sprite
+        if near == 'b':
+            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[BLUE]):
+                return # Currently makes it so player can't move unless changed to BLUE player sprite
+        if near == 'y':
+            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[YELLOW]):
+                return # Currently makes it so player can't move unless changed to YELLOW player sprite
+        if near == 'p':
+            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[PURPLE]):
+                return # Currently makes it so player can't move unless changed to PURPLE player sprite
+        if near == 'g':
+            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[GREEN]):
+                return # Currently makes it so player can't move unless changed to GREEN player sprite
+        if near == 'o':
+            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[ORANGE]):
+                return # Currently makes it so player can't move unless changed to ORANGE player sprite
         if near == '#':
             return
         self.player.add_move(direction)
