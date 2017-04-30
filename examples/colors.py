@@ -14,13 +14,13 @@ import time
 FRUITMAP = """####################
 ####################
 ####################
-####################
-bs##################
-y###################
-pgbry###############
-o##g################
-br#os###############
-igyp################"""
+#bs#################
+#y##################
+#pgbry5#############
+#o##g###############
+#br#os##############
+#igyp###############
+####################"""
 
 
 FIGURE_COLORS = {
@@ -37,7 +37,7 @@ class Colors:
 
     def __init__(self, screen):
         self.screen = screen
-        self.frame = Frame(self.screen, Rect(0, 0, 640, 640))
+        self.frame = Frame(self.screen, Rect(0, 30, 640, 640))
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
@@ -84,12 +84,12 @@ class Colors:
 
     def check_player_square(self):
         field = self.tm.at(self.player.pos)
-        if field == '*':
+        if field in '123456':
             time.sleep(1)
             self.events.exit_signalled()
-        elif field in 'abcdefgh':
+        elif field == 's':
             self.score += 100
-            self.tm.set_tile(self.player.pos, '.')
+            self.tm.set_tile(self.player.pos, 'w')
             self.tm.cache_map()
             self.draw()
 
