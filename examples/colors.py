@@ -12,25 +12,15 @@ import time
 
 
 FRUITMAP = """####################
-#bb#bbbbb###########
-##b#b###############
-#gb#be#bc###########
-##b#b##b############
-##b#b#fbb###########
-#*bbbbb#s###########
-####################
-####################
-####################
-####################
 ####################
 ####################
 ####################
 bs##################
 y###################
-vgbry###############
+pgbry###############
 o##g################
 br#os###############
-igyv################"""
+igyp################"""
 
 
 FIGURE_COLORS = {
@@ -48,10 +38,10 @@ class Colors:
     def __init__(self, screen):
         self.screen = screen
         self.frame = Frame(self.screen, Rect(0, 0, 640, 640))
-        self.tile_factory = TileFactory('data/tiles.conf')
+        self.tile_factory = TileFactory('data/colortiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
-                             Vector(0, 19), speed=2)
+                             Vector(0, 9), speed=3)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None
