@@ -10,6 +10,8 @@ from pygame import Rect
 import pygame
 import time
 
+pygame.init()
+pygame.mixer.music.load("shootingstars.mp3")
 
 FRUITMAP = """####################
 ####################
@@ -94,6 +96,7 @@ class Colors:
             self.draw()
 
     def run(self):
+        pygame.mixer.music.play(-1)
         self.events = EventGenerator()
         self.events.add_listener(FigureMoveListener(self.move))
         self.events.add_listener(FigureColorListener(self.set_color))
