@@ -41,7 +41,7 @@ class Colors:
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
-                             Vector(0, 9), speed=3)
+                             Vector(1, 8), speed=3)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None
