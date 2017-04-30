@@ -11,14 +11,26 @@ import pygame
 import time
 
 
-FRUITMAP = """##########
-#b.#...aa#
-##.#.#####
-#h.#.e#.c#
-##.#.##.##
-##a#.#f..#
-#*..b..#g#
-##########"""
+FRUITMAP = """####################
+#bb#bbbbb###########
+##b#b###############
+#gb#be#bc###########
+##b#b##b############
+##b#b#fbb###########
+#*bbbbb#s###########
+####################
+####################
+####################
+####################
+####################
+####################
+####################
+bs##################
+y###################
+vgbry###############
+o##g################
+br#os###############
+igyv################"""
 
 
 FIGURE_COLORS = {
@@ -39,7 +51,7 @@ class Colors:
         self.tile_factory = TileFactory('data/tiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
-                             Vector(4, 1), speed=2)
+                             Vector(0, 19), speed=2)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None
@@ -83,5 +95,5 @@ class Colors:
 
 
 if __name__ == '__main__':
-    game = Game('data/collect_fruit.conf', Colors) #Change to data/colors.conf after creating title screen
+    game = Game('data/colors.conf', Colors) #Change to data/colors.conf after creating title screen
     game.run()
