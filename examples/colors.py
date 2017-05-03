@@ -11,7 +11,7 @@ import pygame
 import time
 
 pygame.init()
-pygame.mixer.music.load("shootingstars.mp3")
+pygame.mixer.music.load("shootingstars.ogg")
 
 FRUITMAP = """####################
 ####################
