@@ -5,10 +5,11 @@ from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move import wait_for_move
 from tilegamelib.game import Game
-from tilegamelib.vector import RED, BLUE, YELLOW, PURPLE, GREEN, ORANGE
+from tilegamelib.vector import RED, BLUE, YELLOW, PURPLE, GREEN, ORANGE, LEFT, RIGHT, UP, DOWN
 from pygame import Rect
 import pygame
 import time
+import random
 
 pygame.init()
 pygame.mixer.music.load("music/shootingstars.ogg")
@@ -34,24 +35,39 @@ FIGURE_COLORS = {
     ORANGE: 'b.dot'
 }
 
+GHOST_TILE = 'b.ghost'
+
+GHOST_POSITIONS = [Vector(1, 3),
+                   Vector(1, 4),
+                   Vector(1, 5)]
 
 class Colors:
 
     def __init__(self, screen):
         self.screen = screen
-        self.frame = Frame(self.screen, Rect(0, 30, 640, 640))
+        self.level = None
+        self.ghosts = []
+        self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
+        self.level = ColorsLevel(FRUITMAP, self.tm)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
                              Vector(1, 8), speed=3)
+
+        self.create_ghosts()
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None
         self.score = 0
 
+
+
     def draw(self):
         self.tm.draw()
         self.player.draw()
+        for g in self.ghosts:
+            g.update()
+            g.draw()
         pygame.display.update()
 
     def move(self, direction):
@@ -104,6 +120,75 @@ class Colors:
         with draw_timer(self, self.events):
             self.events.event_loop()
 
+    def create_ghosts(self):
+        self.ghosts = []
+        for pos in GHOST_POSITIONS:
+            self.ghosts.append(Ghost(self.frame, self.tile_factory,
+                               pos, self.level))
+
+
+class Ghost:
+
+    def __init__(self, frame, tile_factory, pos, level):
+        tile = tile_factory.get(GHOST_TILE)
+        self.sprite = Sprite(frame, tile, pos, speed=2)
+        self.level = level
+        self.direction = None
+        self.set_random_direction()
+
+    def get_possible_moves(self):
+        result = []
+        directions = [LEFT, RIGHT, UP, DOWN]
+        for vector in directions:
+            if vector * -1 != self.direction:
+                newpos = self.sprite.pos + vector
+                tile = self.level.at(newpos)
+                if tile != '#':
+                    result.append(vector)
+        if not result:
+            result = [self.direction * (-1)]
+        return result
+
+    def set_random_direction(self):
+        moves = self.get_possible_moves()
+        i = random.randint(0, len(moves) - 1)
+        self.direction = moves[i]
+
+    def move(self):
+        if self.sprite.finished:
+            self.set_random_direction()
+            self.sprite.add_move(self.direction)
+        else:
+            self.sprite.move()
+
+    def update(self):
+        self.move()
+
+    def draw(self):
+        self.sprite.draw()
+
+
+class ColorsLevel:
+
+    def __init__(self, data, tmap):
+        self.tmap = tmap
+        self.tmap.set_map(str(data))
+        self.tmap.cache_map()
+        self.souls_left = 0
+
+    def at(self, pos):
+        return self.tmap.at(pos)
+
+    def remove_soul(self, pos):
+        tile = self.at(pos)
+        # if tile != '.':
+        #     self.tmap.set_tile(pos, '.')
+        #     self.tmap.cache_map()
+        #     if tile == '*':
+        #         self.souls_left -= 1
+
+    def draw(self):
+        self.tmap.draw()
 
 if __name__ == '__main__':
     game = Game('data/colors.conf', Colors) #Change to data/colors.conf after creating title screen
