@@ -38,8 +38,7 @@ FIGURE_COLORS = {
 GHOST_TILE = 'b.ghost'
 
 GHOST_POSITIONS = [Vector(1, 3),
-                   Vector(1, 4),
-                   Vector(1, 5)]
+                   Vector(1, 4),]
 
 class Colors:
 
