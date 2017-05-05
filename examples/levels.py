@@ -85,10 +85,10 @@ ghostpos4=ghostpos3=[Vector(5,4), Vector(5,5), Vector(5,6)]
 
 #level 5, Trapped On An Island
 level5="""
-####wr####
-###psoo###
-##wrboww##
-#wgysrwsw#
+##########
+####so####
+###rbow###
+##gysrws##
 #ysooryww#
 #wpryppww#
 ##wgsrwo##
@@ -175,4 +175,4 @@ def playerpos(levelnumber):
 	if levelnumber == 6:
 		return playerpos6
 	if levelnumber == 7:
-		return playerpo7
+		return playerpos7
