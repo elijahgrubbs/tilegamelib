@@ -81,7 +81,7 @@ level4="""
 #swwwwwws#
 ##########"""
 playerpos4=Vector(1, 1)
-ghostpos4=ghostpos3=[Vector(5,4), Vector(5,5), Vector(5,6)]
+ghostpos4=[Vector(5,4), Vector(5,5), Vector(5,6)]
 
 #level 5, Trapped On An Island
 level5="""
@@ -126,7 +126,7 @@ level7="""
 #swwwwwws#
 ##########"""
 playerpos7=Vector(1, 1)
-ghostpos7=ghostpos3=[Vector(5,2), Vector(5,3), Vector(5,4), Vector(5,5), Vector(5,6), Vector(5,7), Vector(5,8)]
+ghostpos7=[Vector(5,2), Vector(5,3), Vector(5,4), Vector(5,5), Vector(5,6), Vector(5,7), Vector(5,8)]
 
 def getlevel(levelnumber):
 	if levelnumber == 1:
