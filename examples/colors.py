@@ -10,20 +10,12 @@ from pygame import Rect
 import pygame
 import time
 import random
+import levels
 
 pygame.init()
 pygame.mixer.music.load("music/shootingstars.ogg")
 
-FRUITMAP = """####################
-####################
-####################
-#bs#################
-#y##################
-#pgbry5#############
-#o##g###############
-#br#os##############
-#igyp###############
-####################"""
+FRUITMAP = levels.getlevel(6)
 
 
 FIGURE_COLORS = {
@@ -37,8 +29,8 @@ FIGURE_COLORS = {
 
 GHOST_TILE = 'b.ghost'
 
-GHOST_POSITIONS = [Vector(1, 3),
-                   Vector(1, 4),]
+GHOST_POSITIONS = levels.ghostpos(6)
+PLAYER_POSISTION = levels.playerpos(6)
 
 class Colors:
 
@@ -51,7 +43,7 @@ class Colors:
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.level = ColorsLevel(FRUITMAP, self.tm)
         self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
-                             Vector(1, 8), speed=3)
+                             PLAYER_POSISTION, speed=3)
 
         self.create_ghosts()
         self.tm.set_map(FRUITMAP)
