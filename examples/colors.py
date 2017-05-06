@@ -65,8 +65,12 @@ class Colors:
 
         self.set_direction(direction)
 
+
+
         nearpos = self.player.pos + direction
         near = self.tm.at(nearpos)
+
+        print(near)
 
         allowedToMove = True
         if near != self.player_color and near != 'w' and near != 'i' and near != 's':

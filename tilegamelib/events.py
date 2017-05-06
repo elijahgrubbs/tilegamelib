@@ -126,7 +126,7 @@ class EventGenerator:
                 for l in self.listeners:
                     l.handle_key(event.key)
         """Called each time a key is released."""
-
+        self.lastkey = 0
 
     def exit_signalled(self, event=None):
         """Takes care of Ctrl-C and other interrupting stuff."""
