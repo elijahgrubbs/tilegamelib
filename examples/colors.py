@@ -19,12 +19,12 @@ FRUITMAP = levels.getlevel(6)
 
 
 FIGURE_COLORS = {
-    RED: 'b.pac_up',
-    BLUE: 'b.pac_down',
-    YELLOW: 'b.pac_left',
-    PURPLE: 'b.ghost',
-    GREEN: 'b.tail',
-    ORANGE: 'b.dot'
+    RED: 'p_red_d',
+    BLUE: 'p_blue_d',
+    YELLOW: 'p_yellow_d',
+    PURPLE: 'p_purple_d',
+    GREEN: 'p_green_d',
+    ORANGE: 'p_orange_d'
 }
 
 GHOST_TILE = 'b.ghost'
