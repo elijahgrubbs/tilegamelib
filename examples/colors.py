@@ -69,7 +69,20 @@ class Colors:
         near = self.tm.at(nearpos)
         
         allowedToMove = near == self.player_color and near != '#' or near == 'w' or near == 'i' or near == 's'
-
+        # Allows movement to portal tiles if player color matches
+        if near == '1' and BLUE == self.player_color:
+            allowedToMove = True
+        elif near == '2' and RED == self.player_color:
+            allowedToMove = True
+        elif near == '3' and YELLOW == self.player_color:
+            allowedToMove = True
+        elif near == '4' and GREEN == self.player_color:
+            allowedToMove = True
+        elif near == '5' and ORANGE == self.player_color:
+            allowedToMove = True
+        elif near == '6' and PURPLE == self.player_color:
+            allowedToMove = True
+    
         if allowedToMove:
             self.player.add_move(direction)
             wait_for_move(self.player, self.screen, self.draw, 0.01)
