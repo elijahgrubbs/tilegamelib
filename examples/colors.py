@@ -17,17 +17,16 @@ pygame.mixer.music.load("music/shootingstars.ogg")
 
 FRUITMAP = levels.getlevel(6)
 
+FIGURE_SPRITES = [
+    ['p_red_u', 'p_red_d', 'p_red_l', 'p_red_r'],
+    ['p_blue_u', 'p_blue_d', 'p_blue_l', 'p_blue_r'],
+    ['p_yellow_u', 'p_yellow_d', 'p_yellow_l', 'p_yellow_r'],
+    ['p_purple_u', 'p_purple_d', 'p_purple_l', 'p_purple_r'],
+    ['p_green_u', 'p_green_d', 'p_green_l', 'p_green_r'],
+    ['p_orange_u', 'p_orange_d', 'p_orange_l', 'p_orange_r']
+]
 
-FIGURE_COLORS = {
-    RED: 'p_red_d',
-    BLUE: 'p_blue_d',
-    YELLOW: 'p_yellow_d',
-    PURPLE: 'p_purple_d',
-    GREEN: 'p_green_d',
-    ORANGE: 'p_orange_d'
-}
-
-GHOST_TILE = 'b.ghost'
+GHOST_TILE = 'p_red_d'
 
 GHOST_POSITIONS = levels.ghostpos(6)
 PLAYER_POSISTION = levels.playerpos(6)
@@ -44,7 +43,8 @@ class Colors:
         self.level = ColorsLevel(FRUITMAP, self.tm)
         self.player = Sprite(self.frame, self.tile_factory.get('p_purple_d'),
                              PLAYER_POSISTION, speed=3)
-
+        self.player_color = RED
+        self.player_direction = DOWN
         self.create_ghosts()
         self.tm.set_map(FRUITMAP)
         self.draw()
@@ -62,97 +62,57 @@ class Colors:
         pygame.display.update()
 
     def move(self, direction):
-        # Change the player character's sprite direction based on their color
-        # Change if purple player
-        if self.player.tile == self.tile_factory.get(FIGURE_COLORS[PURPLE]):
-            if direction == Vector(0,-1): # Change to up sprite
-                self.player.tile = self.tile_factory.get('p_purple_u')
-            if direction == Vector(0,1): # Change to down sprite
-                self.player.tile = self.tile_factory.get('p_purple_d')
-            if direction == Vector(-1,0): # Change to left sprite
-                self.player.tile = self.tile_factory.get('p_purple_l')
-            if direction == Vector(1,0): # Change to right sprite
-                self.player.tile = self.tile_factory.get('p_purple_r')
-        # Change if green player
-        if self.player.tile == self.tile_factory.get(FIGURE_COLORS[GREEN]):
-            if direction == Vector(0,-1): # Change to up sprite
-                self.player.tile = self.tile_factory.get('p_green_u')
-            elif direction == Vector(0,1): # Change to down sprite
-                self.player.tile = self.tile_factory.get('p_green_d')
-            elif direction == Vector(-1,0): # Change to left sprite
-                self.player.tile = self.tile_factory.get('p_green_l')
-            elif direction == Vector(1,0): # Change to right sprite
-                self.player.tile = self.tile_factory.get('p_green_r')
-        # Change if red player
-        if self.player.tile == self.tile_factory.get(FIGURE_COLORS[RED]):
-            if direction == Vector(0,-1): # Change to up sprite
-                self.player.tile = self.tile_factory.get('p_red_u')
-            if direction == Vector(0,1): # Change to down sprite
-                self.player.tile = self.tile_factory.get('p_red_d')
-            if direction == Vector(-1,0): # Change to left sprite
-                self.player.tile = self.tile_factory.get('p_red_l')
-            if direction == Vector(1,0): # Change to right sprite
-                self.player.tile = self.tile_factory.get('p_red_r')
-        # Change if blue player
-        elif self.player.tile == self.tile_factory.get(FIGURE_COLORS[BLUE]):
-            if direction == Vector(0,-1): # Change to up sprite
-                self.player.tile = self.tile_factory.get('p_blue_u')
-            elif direction == Vector(0,1): # Change to down sprite
-                self.player.tile = self.tile_factory.get('p_blue_d')
-            elif direction == Vector(-1,0): # Change to left sprite
-                self.player.tile = self.tile_factory.get('p_blue_l')
-            elif direction == Vector(1,0): # Change to right sprite
-                self.player.tile = self.tile_factory.get('p_blue_r')
-        # Change if yellow player
-        elif self.player.tile == self.tile_factory.get(FIGURE_COLORS[YELLOW]):
-            if direction == Vector(0,-1): # Change to up sprite
-                self.player.tile = self.tile_factory.get('p_yellow_u')
-            elif direction == Vector(0,1): # Change to down sprite
-                self.player.tile = self.tile_factory.get('p_yellow_d')
-            elif direction == Vector(-1,0): # Change to left sprite
-                self.player.tile = self.tile_factory.get('p_yellow_l')
-            elif direction == Vector(1,0): # Change to right sprite
-                self.player.tile = self.tile_factory.get('p_yellow_r')
-        # Change if orange player
-        elif self.player.tile == self.tile_factory.get(FIGURE_COLORS[ORANGE]):
-            if direction == Vector(0,-1): # Change to up sprite
-                self.player.tile = self.tile_factory.get('p_orange_u')
-            elif direction == Vector(0,1): # Change to down sprite
-                self.player.tile = self.tile_factory.get('p_orange_d')
-            elif direction == Vector(-1,0): # Change to left sprite
-                self.player.tile = self.tile_factory.get('p_orange_l')
-            elif direction == Vector(1,0): # Change to right sprite
-                self.player.tile = self.tile_factory.get('p_orange_r')
-        # Get position of tile to be moved to
+
+        self.set_direction(direction)
+
         nearpos = self.player.pos + direction
-        # Allow or reject movement based on character's color
         near = self.tm.at(nearpos)
-        if near == 'r':
-            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[RED]):
-                return # Currently makes it so player can't move unless changed to RED player sprite
-        if near == 'b':
-            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[BLUE]):
-                return # Currently makes it so player can't move unless changed to BLUE player sprite
-        if near == 'y':
-            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[YELLOW]):
-                return # Currently makes it so player can't move unless changed to YELLOW player sprite
-        if near == 'p':
-            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[PURPLE]):
-                return # Currently makes it so player can't move unless changed to PURPLE player sprite
-        if near == 'g':
-            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[GREEN]):
-                return # Currently makes it so player can't move unless changed to GREEN player sprite
-        if near == 'o':
-            if self.player.tile != self.tile_factory.get(FIGURE_COLORS[ORANGE]):
-                return # Currently makes it so player can't move unless changed to ORANGE player sprite
+
+        allowedToMove = True
+        if near != self.player_color:
+            allowedToMove = False
         if near == '#':
-            return
-        self.player.add_move(direction)
-        wait_for_move(self.player, self.screen, self.draw, 0.01)
-        self.check_player_square()
+            allowedToMove = False
+
+        if allowedToMove:
+            self.player.add_move(direction)
+            wait_for_move(self.player, self.screen, self.draw, 0.01)
+            self.check_player_square()
+        else:
+            self.player.draw()
+
+    def get_sprite_from_table(self, color, direction):
+        row = 0
+        col = 0
+        if color == RED:
+            row = 0
+        elif color == BLUE:
+            row = 1
+        elif color == YELLOW:
+            row = 2
+        elif color == PURPLE:
+            row = 3
+        elif color == GREEN:
+            row = 4
+        elif color == ORANGE:
+            row = 5
+        if direction == UP:
+            col = 0
+        if direction == DOWN:
+            col = 1
+        if direction == LEFT:
+            col = 2
+        if direction == RIGHT:
+            col = 3
+        return self.tile_factory.get(FIGURE_SPRITES[row][col])
+
+    def set_direction(self, direction):
+        self.player_direction = direction
+        self.player.tile = self.get_sprite_from_table(self.player_color, self.player_direction)
 
     def set_color(self, color):
-        self.player.tile = self.tile_factory.get(FIGURE_COLORS[color])
+        self.player_color = color
+        self.player.tile = self.get_sprite_from_table(self.player_color, self.player_direction)
 
     def check_player_square(self):
         field = self.tm.at(self.player.pos)
