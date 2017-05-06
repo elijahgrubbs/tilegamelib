@@ -113,15 +113,25 @@ class EventGenerator:
         handle = 0
 
         if event.key == pygame.K_a or event.key == pygame.K_s or event.key == pygame.K_d:
-            if keys[pygame.K_a]:
+            if keys[pygame.K_a] and keys[pygame.K_s]:
+                event.key = pygame.K_j
+                handle = 1
+            elif keys[pygame.K_s] and keys[pygame.K_d]:
+                event.key = pygame.K_k
+                handle = 1
+            elif keys[pygame.K_d] and keys[pygame.K_a]:
+                event.key = pygame.K_l
+                handle = 1
+            elif keys[pygame.K_a]:
                 event.key = pygame.K_a
                 handle = 1
-            if keys[pygame.K_s]:
+            elif keys[pygame.K_s]:
                 event.key = pygame.K_s
                 handle = 1
-            if keys[pygame.K_d]:
+            elif keys[pygame.K_d]:
                 event.key = pygame.K_d
                 handle = 1
+
             if handle == 1:
                 for l in self.listeners:
                     l.handle_key(event.key)
