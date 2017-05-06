@@ -42,7 +42,7 @@ class Colors:
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.tm = TiledMap(self.frame, self.tile_factory)
         self.level = ColorsLevel(FRUITMAP, self.tm)
-        self.player = Sprite(self.frame, self.tile_factory.get('b.pac_right'),
+        self.player = Sprite(self.frame, self.tile_factory.get('p_purple_d'),
                              PLAYER_POSISTION, speed=3)
 
         self.create_ghosts()
