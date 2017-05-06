@@ -69,17 +69,16 @@ class Colors:
         near = self.tm.at(nearpos)
 
         allowedToMove = True
-        if near != self.player_color:
+        if near != self.player_color and near != 'w' and near != 'i' and near != 's':
             allowedToMove = False
-        if near == '#':
+        elif near == '#':
             allowedToMove = False
 
         if allowedToMove:
             self.player.add_move(direction)
             wait_for_move(self.player, self.screen, self.draw, 0.01)
             self.check_player_square()
-        else:
-            self.player.draw()
+
 
     def get_sprite_from_table(self, color, direction):
         row = 0

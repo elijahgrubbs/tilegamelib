@@ -103,25 +103,30 @@ class EventGenerator:
             self.key_repeat_delay = self.key_repeat
             for l in self.listeners:
                 l.handle_key(event.key)
+
         self.lastkey = event.key
+
+
 
     def key_released(self, event):
         keys = pygame.key.get_pressed()
         handle = 0
-        if keys[pygame.K_a]:
-            event.key = pygame.K_a
-            handle = 1
-        if keys[pygame.K_s]:
-            event.key = pygame.K_s
-            handle = 1
-        if keys[pygame.K_d]:
-            event.key = pygame.K_d
-            handle = 1
-        if handle == 1:
-            for l in self.listeners:
-                l.handle_key(event.key)
+
+        if event.key == pygame.K_a or event.key == pygame.K_s or event.key == pygame.K_d:
+            if keys[pygame.K_a]:
+                event.key = pygame.K_a
+                handle = 1
+            if keys[pygame.K_s]:
+                event.key = pygame.K_s
+                handle = 1
+            if keys[pygame.K_d]:
+                event.key = pygame.K_d
+                handle = 1
+            if handle == 1:
+                for l in self.listeners:
+                    l.handle_key(event.key)
         """Called each time a key is released."""
-        self.lastkey = 0
+
 
     def exit_signalled(self, event=None):
         """Takes care of Ctrl-C and other interrupting stuff."""
