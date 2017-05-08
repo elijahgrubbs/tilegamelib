@@ -1,6 +1,8 @@
 
 from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener, FigureColorListener
+from tilegamelib.bar_display import BarDisplay
+from tilegamelib.basic_boxes import DictBox
 from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move import wait_for_move
@@ -12,10 +14,10 @@ import time
 import random
 import levels
 
+
 pygame.init()
 pygame.mixer.music.load("music/shootingstars.ogg")
 
-FRUITMAP = levels.getlevel(6)
 
 FIGURE_SPRITES = [
     ['p_red_u', 'p_red_d', 'p_red_l', 'p_red_r'],
@@ -28,66 +30,156 @@ FIGURE_SPRITES = [
 
 GHOST_TILE = 'p_red_d'
 
-GHOST_POSITIONS = levels.ghostpos(6)
-PLAYER_POSISTION = levels.playerpos(6)
+
 
 class Colors:
 
     def __init__(self, screen):
         self.screen = screen
-        self.level = None
-        self.ghosts = []
         self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
-        self.tm = TiledMap(self.frame, self.tile_factory)
-        self.level = ColorsLevel(FRUITMAP, self.tm)
-        self.player = Sprite(self.frame, self.tile_factory.get('p_purple_d'),
-                             PLAYER_POSISTION, speed=3)
-        self.player_color = RED
-        self.player_direction = DOWN
-        self.create_ghosts()
-        self.tm.set_map(FRUITMAP)
-        self.draw()
+        self.current_level = 6
+        self.level_loader = levels
+
+        self.level = None
+        self.player = None
         self.events = None
-        self.score = 0
+        self.ghosts = []
+        self.update_mode = None
+        self.status_box = None
 
+        self.create_level()
+        self.create_player()
+        self.create_ghosts()
+        self.create_status_box()
 
+        self.collided = False
+        self.mode = None
+        self.update_mode = self.update_ingame
+
+    def create_level(self):
+        tmap = TiledMap(self.frame, self.tile_factory)
+        self.level = ColorsLevel(self.level_loader.getlevel(self.current_level), tmap)
 
     def draw(self):
-        self.tm.draw()
+        self.update_mode()
+        self.level.draw()
+        self.player.update()
         self.player.draw()
         for g in self.ghosts:
             g.update()
             g.draw()
+        self.status_box.draw()
         pygame.display.update()
+        self.check_collision(self.player.sprite.pos)
+        time.sleep(0.005)
 
-    def move(self, direction):
+    def create_player(self):
+        self.player = Player(self.frame, self.tile_factory, self.level_loader.getplayerpos(self.current_level), self.level)
+        self.player.set_direction(DOWN)
 
-        self.set_direction(direction)
+    def run(self):
+        pygame.mixer.music.play(-1)
+        self.events = EventGenerator()
+        self.events.add_listener(FigureMoveListener(self.player.move))
+        self.events.add_listener(FigureColorListener(self.player.set_color))
+        self.events.add_listener(ExitListener(self.complete_level))
+        with draw_timer(self, self.events):
+            self.events.event_loop()
 
-        nearpos = self.player.pos + direction
-        near = self.tm.at(nearpos)
-        
-        allowedToMove = near == self.player_color and near != '#' or near == 'w' or near == 'i' or near == 's'
-        # Allows movement to portal tiles if player color matches
-        if near == '1' and BLUE == self.player_color:
-            allowedToMove = True
-        elif near == '2' and RED == self.player_color:
-            allowedToMove = True
-        elif near == '3' and YELLOW == self.player_color:
-            allowedToMove = True
-        elif near == '4' and GREEN == self.player_color:
-            allowedToMove = True
-        elif near == '5' and ORANGE == self.player_color:
-            allowedToMove = True
-        elif near == '6' and PURPLE == self.player_color:
-            allowedToMove = True
-    
-        if allowedToMove:
-            self.player.add_move(direction)
-            wait_for_move(self.player, self.screen, self.draw, 0.01)
-            self.check_player_square()
+    def create_ghosts(self):
+        self.ghosts = []
+        for pos in self.level_loader.getghostpos(self.current_level):
+            self.ghosts.append(Ghost(self.frame, self.tile_factory,
+                               pos, self.level))
 
+    def check_collision(self, pos):
+        # if self.player.collision(self.ghosts):
+        if False:
+            self.update_mode = self.update_die
+            self.player.die()
+            self.collided = True
+        else:
+            field = self.level.at(pos)
+            if field in '123456':
+                time.sleep(1)
+                self.update_mode = self.update_level_complete
+            elif field == 's':
+                self.level.remove_soul(pos)
+
+    def update_die(self):
+        """finish movements"""
+        if self.player.finished:
+            time.sleep(1)
+            self.player.lives.decrease()
+            if self.player.lives.value == 0:
+                self.events.exit_signalled()
+            else:
+                self.reset_level()
+                self.events.empty_event_queue()
+                self.update_mode = self.update_ingame
+
+    def update_level_complete(self):
+        """finish movement"""
+        if self.player.sprite.finished:
+            time.sleep(1)
+            self.complete_level()
+
+
+    def reset_level(self):
+        self.player.sprite.pos = self.level_loader.getplayerpos(self.current_level)
+        self.create_ghosts()
+
+    def update_ingame(self):
+        self.check_collision(self.player.sprite.pos)
+
+    def create_status_box(self):
+        frame = Frame(self.screen, Rect(700, 20, 200, 50))
+        data = {
+            'lives': 5,
+            'level': 1,
+        }
+        self.status_box = DictBox(frame, data)
+
+    def complete_level(self):
+        self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
+        self.tile_factory = TileFactory('data/colortiles.conf')
+        self.current_level = 6
+        self.level_loader = levels
+
+        self.level = None
+        self.player = None
+        self.events = None
+        self.ghosts = []
+        self.update_mode = None
+        self.status_box = None
+
+        self.create_level()
+        self.create_player()
+        self.create_ghosts()
+        self.create_status_box()
+
+        self.collided = False
+        self.mode = None
+        self.update_mode = self.update_ingame
+
+
+
+
+class Player:
+
+    def __init__(self, frame, tile_factory, pos, level):
+        self.level = level
+        self.tile_factory = tile_factory
+        tile = tile_factory.get('p_red_d')
+        self.sprite = Sprite(frame, tile, pos, speed=4)
+        self.eaten = None
+        self.score = 0
+        self.buffered_move = None
+
+        self.color = RED
+        self.direction = DOWN
+        self.health = 3
 
     def get_sprite_from_table(self, color, direction):
         row = 0
@@ -115,38 +207,58 @@ class Colors:
         return self.tile_factory.get(FIGURE_SPRITES[row][col])
 
     def set_direction(self, direction):
-        self.player_direction = direction
-        self.player.tile = self.get_sprite_from_table(self.player_color, self.player_direction)
+        self.direction = direction
+        self.sprite.tile = self.get_sprite_from_table(self.color, self.direction)
 
     def set_color(self, color):
-        self.player_color = color
-        self.player.tile = self.get_sprite_from_table(self.player_color, self.player_direction)
+        self.color = color
+        self.sprite.tile = self.get_sprite_from_table(self.color, self.direction)
 
-    def check_player_square(self):
-        field = self.tm.at(self.player.pos)
-        if field in '123456':
-            time.sleep(1)
-            self.events.exit_signalled()
-        elif field == 's':
-            self.score += 100
-            self.tm.set_tile(self.player.pos, 'w')
-            self.tm.cache_map()
-            self.draw()
+    def move(self, direction):
+        if not self.sprite.finished:
+            self.buffered_move = direction
+            return
+        nearpos = self.sprite.pos + direction
+        self.set_direction(direction)
+        near = self.level.at(nearpos)
 
-    def run(self):
-        pygame.mixer.music.play(-1)
-        self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.move))
-        self.events.add_listener(FigureColorListener(self.set_color))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):
-            self.events.event_loop()
+        allowedToMove = near == self.color and near != '#' or near == 'w' or near == 'i' or near == 's'
+        # Allows movement to portal tiles if player color matches
+        if near == '1' and BLUE == self.color:
+            allowedToMove = True
+        elif near == '2' and RED == self.color:
+            allowedToMove = True
+        elif near == '3' and YELLOW == self.color:
+            allowedToMove = True
+        elif near == '4' and GREEN == self.color:
+            allowedToMove = True
+        elif near == '5' and ORANGE == self.color:
+            allowedToMove = True
+        elif near == '6' and PURPLE == self.color:
+            allowedToMove = True
 
-    def create_ghosts(self):
-        self.ghosts = []
-        for pos in GHOST_POSITIONS:
-            self.ghosts.append(Ghost(self.frame, self.tile_factory,
-                               pos, self.level))
+        if allowedToMove:
+            self.sprite.add_move(direction)
+
+    def update(self):
+        """Try eating dots and fruit"""
+        if self.sprite.finished and self.buffered_move:
+            self.move(self.buffered_move)
+            self.buffered_move = None
+        if not self.sprite.finished:
+            self.sprite.move()
+
+    def draw(self):
+        self.sprite.draw()
+
+    def collision(self, sprites):
+        for sprite in sprites:
+            if self.sprite.pos == sprite.sprite.pos:
+                return True
+
+    def die(self):
+        self.buffered_move = None
+        self.sprite.path = []
 
 
 class Ghost:
@@ -194,7 +306,7 @@ class ColorsLevel:
 
     def __init__(self, data, tmap):
         self.tmap = tmap
-        self.tmap.set_map(str(data))
+        self.tmap.set_map(data)
         self.tmap.cache_map()
         self.souls_left = 0
 
@@ -203,11 +315,9 @@ class ColorsLevel:
 
     def remove_soul(self, pos):
         tile = self.at(pos)
-        # if tile != '.':
-        #     self.tmap.set_tile(pos, '.')
-        #     self.tmap.cache_map()
-        #     if tile == '*':
-        #         self.souls_left -= 1
+        self.tmap.set_tile(pos, 'w')
+        self.tmap.cache_map()
+        self.draw()
 
     def draw(self):
         self.tmap.draw()

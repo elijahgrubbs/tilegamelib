@@ -144,7 +144,7 @@ def getlevel(levelnumber):
 	if levelnumber == 7:
 		return level7
 
-def ghostpos(levelnumber):
+def getghostpos(levelnumber):
 	if levelnumber == 1:
 		return ghostpos1
 	if levelnumber == 2:
@@ -161,7 +161,7 @@ def ghostpos(levelnumber):
 		return ghostpos7
 
 
-def playerpos(levelnumber):
+def getplayerpos(levelnumber):
 	if levelnumber == 1:
 		return playerpos1
 	if levelnumber == 2:
