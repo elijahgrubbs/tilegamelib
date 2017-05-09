@@ -17,7 +17,12 @@ import levels
 
 pygame.init()
 pygame.mixer.music.load("music/shootingstars.ogg")
-
+ccsound=pygame.mixer.Sound("music/colorchange.ogg")
+damsound=pygame.mixer.Sound("music/damage.ogg")
+deadsound=pygame.mixer.Sound("music/dead.ogg")
+startsound=pygame.mixer.Sound("music/gamestart.ogg")
+movesound=pygame.mixer.Sound("music/move.ogg")
+souleatsound=pygame.mixer.Sound("music/souleat.ogg")
 
 FIGURE_SPRITES = [
     ['p_red_u', 'p_red_d', 'p_red_l', 'p_red_r'],
@@ -38,7 +43,7 @@ class Colors:
         self.screen = screen
         self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
-        self.current_level = 6
+        self.current_level = 4
         self.level_loader = levels
 
         self.level = None
@@ -79,6 +84,7 @@ class Colors:
         self.player.set_direction(DOWN)
 
     def run(self):
+    	startsound.play()
         pygame.mixer.music.play(-1)
         self.events = EventGenerator()
         self.events.add_listener(FigureMoveListener(self.player.move))
@@ -213,6 +219,7 @@ class Player:
     def set_color(self, color):
         self.color = color
         self.sprite.tile = self.get_sprite_from_table(self.color, self.direction)
+        ccsound.play()
 
     def move(self, direction):
         if not self.sprite.finished:
@@ -239,6 +246,7 @@ class Player:
 
         if allowedToMove:
             self.sprite.add_move(direction)
+            movesound.play()
 
     def update(self):
         """Try eating dots and fruit"""
@@ -259,6 +267,7 @@ class Player:
     def die(self):
         self.buffered_move = None
         self.sprite.path = []
+        diesound.play()
 
 
 class Ghost:
@@ -318,6 +327,7 @@ class ColorsLevel:
         self.tmap.set_tile(pos, 'w')
         self.tmap.cache_map()
         self.draw()
+        souleatsound.play()
 
     def draw(self):
         self.tmap.draw()
