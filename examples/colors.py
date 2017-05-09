@@ -83,7 +83,7 @@ class Colors:
         self.player.set_direction(DOWN)
 
     def run(self):
-    	startsound.play()
+        startsound.play()
         pygame.mixer.music.load("music/shootingstars.ogg")
         pygame.mixer.music.play(-1)
         self.events = EventGenerator()
