@@ -19,6 +19,7 @@ example= """####################
 ####################"""
 ghostposex=[Vector(1, 3)]
 playerposex=[Vector(1, 8)]
+ghostspeedex=2
 
 #level 1, Tutorial
 #player must press every combination of colors to learn
@@ -35,6 +36,7 @@ level1="""####################
 ####################"""
 playerpos1=Vector(1, 8)
 ghostpos1=[Vector(1, 8)]
+ghostspeed1=2
 #TODO: TAKE OUT GHOST. GAME WONT INITIALIZE WITHOUT ONE IN THE LEVEL
 
 #level 2, GHOST!
@@ -52,6 +54,7 @@ level2="""
 ##########"""
 playerpos2=Vector(5, 8)
 ghostpos2=[Vector(1, 8)]
+ghostspeed2=2
 
 #level 2, Track and Field
 level3="""
@@ -67,6 +70,7 @@ level3="""
 ##########"""
 playerpos3=Vector(5, 8)
 ghostpos3=[Vector(1, 8)]
+ghostspeed3=2
 
 #level 4, Cage Match
 level4="""
@@ -82,6 +86,7 @@ level4="""
 ##########"""
 playerpos4=Vector(1, 1)
 ghostpos4=[Vector(5,4), Vector(5,5), Vector(5,6)]
+ghostspeed4=2
 
 #level 5, Trapped On An Island
 level5="""
@@ -97,6 +102,7 @@ level5="""
 ##########"""
 playerpos5=Vector(4, 8)
 ghostpos5=[Vector(5,5), Vector(5,6)]
+ghostspeed5=2
 
 #level 6, The Maze Runner
 level6="""
@@ -112,6 +118,7 @@ level6="""
 ##########"""
 playerpos6=Vector(3, 8)
 ghostpos6=[Vector(1, 8), Vector(1, 2)]
+ghostspeed6=1
 
 #level 7, Outnumbered...
 level7="""
@@ -127,6 +134,7 @@ level7="""
 ##########"""
 playerpos7=Vector(1, 1)
 ghostpos7=[Vector(5,2), Vector(5,3), Vector(5,4), Vector(5,5), Vector(5,6), Vector(5,7), Vector(5,8)]
+ghostspeed7=2
 
 def getlevel(levelnumber):
 	if levelnumber == 1:
@@ -176,3 +184,19 @@ def getplayerpos(levelnumber):
 		return playerpos6
 	if levelnumber == 7:
 		return playerpos7
+
+def getGhostSpeed(levelnumber):
+	if levelnumber == 1:
+		return ghostspeed1
+	if levelnumber == 2:
+		return ghostspeed2
+	if levelnumber == 3:
+		return ghostspeed3
+	if levelnumber == 4:
+		return ghostspeed4
+	if levelnumber == 5:
+		return ghostspeed5
+	if levelnumber == 6:
+		return ghostspeed6
+	if levelnumber == 7:
+		return ghostspeed7

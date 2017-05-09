@@ -44,6 +44,7 @@ class Colors:
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.current_level = 4
         self.level_loader = levels
+        self.score = 0
 
         self.level = None
         self.player = None
@@ -63,7 +64,7 @@ class Colors:
 
     def create_level(self):
         tmap = TiledMap(self.frame, self.tile_factory)
-        self.level = ColorsLevel(self.level_loader.getlevel(self.current_level), tmap)
+        self.level = ColorsLevel(self.level_loader.getlevel(self.current_level), tmap, self.level_loader.getGhostSpeed(self.current_level))
 
     def draw(self):
         self.update_mode()
@@ -105,8 +106,8 @@ class Colors:
             g.unstuck()
 
     def check_collision(self, pos):
-        # if self.player.collision(self.ghosts):
-        if False:
+        if self.player.collision(self.ghosts):
+        # if False:
             self.update_mode = self.update_die
             self.player.die()
             self.collided = True
@@ -120,12 +121,13 @@ class Colors:
 
     def update_die(self):
         """finish movements"""
-        if self.player.finished:
+        if self.player.sprite.finished:
             time.sleep(1)
-            self.player.lives.decrease()
-            if self.player.lives.value == 0:
+            self.player.lives = self.player.lives - 1
+            if self.player.lives == 0:
                 self.events.exit_signalled()
             else:
+                self.status_box.data['lives'] = self.player.lives
                 self.reset_level()
                 self.events.empty_event_queue()
                 self.update_mode = self.update_ingame
@@ -147,7 +149,7 @@ class Colors:
     def create_status_box(self):
         frame = Frame(self.screen, Rect(700, 20, 200, 50))
         data = {
-            'lives': 5,
+            'lives': 3,
             'level': 1,
         }
         self.status_box = DictBox(frame, data)
@@ -157,6 +159,7 @@ class Colors:
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.current_level = 6
         self.level_loader = levels
+        self.score = 0
 
         self.level = None
         self.player = None
@@ -189,7 +192,7 @@ class Player:
 
         self.color = RED
         self.direction = DOWN
-        self.health = 3
+        self.lives = 3
 
     def get_sprite_from_table(self, color, direction):
         row = 0
@@ -271,15 +274,13 @@ class Player:
     def die(self):
         self.buffered_move = None
         self.sprite.path = []
-        diesound.play()
-
 
 class Ghost:
 
     def __init__(self, frame, tile_factory, pos, level):
         tile = tile_factory.get(GHOST_TILE)
-        self.sprite = Sprite(frame, tile, pos, speed=2)
         self.level = level
+        self.sprite = Sprite(frame, tile, pos, self.level.get_speed())
         self.direction = None
         self.set_random_direction()
         self.stuck = True
@@ -321,11 +322,12 @@ class Ghost:
 
 class ColorsLevel:
 
-    def __init__(self, data, tmap):
+    def __init__(self, data, tmap, ghost_speed):
         self.tmap = tmap
         self.tmap.set_map(data)
         self.tmap.cache_map()
         self.souls_left = 0
+        self.ghost_speed = ghost_speed
 
     def at(self, pos):
         return self.tmap.at(pos)
@@ -339,6 +341,9 @@ class ColorsLevel:
 
     def draw(self):
         self.tmap.draw()
+
+    def get_speed(self):
+        return self.ghost_speed
 
 if __name__ == '__main__':
     pygame.mixer.music.load("music/allstar.ogg")
