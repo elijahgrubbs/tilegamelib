@@ -32,7 +32,7 @@ FIGURE_SPRITES = [
     ['p_orange_u', 'p_orange_d', 'p_orange_l', 'p_orange_r']
 ]
 
-GHOST_TILE = 'p_red_d'
+GHOST_TILE = 'enemy_d'
 
 
 
