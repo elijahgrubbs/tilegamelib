@@ -88,6 +88,7 @@ class Colors:
         pygame.mixer.music.play(-1)
         self.events = EventGenerator()
         self.events.add_listener(FigureMoveListener(self.player.move))
+        self.events.add_listener(FigureMoveListener(self.unstuck_ghosts))
         self.events.add_listener(FigureColorListener(self.player.set_color))
         self.events.add_listener(ExitListener(self.complete_level))
         with draw_timer(self, self.events):
@@ -98,6 +99,10 @@ class Colors:
         for pos in self.level_loader.getghostpos(self.current_level):
             self.ghosts.append(Ghost(self.frame, self.tile_factory,
                                pos, self.level))
+
+    def unstuck_ghosts(self, pos):
+        for g in self.ghosts:
+            g.unstuck()
 
     def check_collision(self, pos):
         # if self.player.collision(self.ghosts):
@@ -168,8 +173,7 @@ class Colors:
         self.collided = False
         self.mode = None
         self.update_mode = self.update_ingame
-
-
+        self.run()
 
 
 class Player:
@@ -278,6 +282,7 @@ class Ghost:
         self.level = level
         self.direction = None
         self.set_random_direction()
+        self.stuck = True
 
     def get_possible_moves(self):
         result = []
@@ -301,7 +306,7 @@ class Ghost:
         if self.sprite.finished:
             self.set_random_direction()
             self.sprite.add_move(self.direction)
-        else:
+        elif not self.stuck:
             self.sprite.move()
 
     def update(self):
@@ -309,6 +314,9 @@ class Ghost:
 
     def draw(self):
         self.sprite.draw()
+
+    def unstuck(self):
+        self.stuck = False
 
 
 class ColorsLevel:
