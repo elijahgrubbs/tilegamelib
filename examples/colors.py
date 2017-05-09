@@ -16,7 +16,6 @@ import levels
 
 
 pygame.init()
-pygame.mixer.music.load("music/shootingstars.ogg")
 ccsound=pygame.mixer.Sound("music/colorchange.ogg")
 damsound=pygame.mixer.Sound("music/damage.ogg")
 deadsound=pygame.mixer.Sound("music/dead.ogg")
@@ -85,6 +84,7 @@ class Colors:
 
     def run(self):
     	startsound.play()
+        pygame.mixer.music.load("music/shootingstars.ogg")
         pygame.mixer.music.play(-1)
         self.events = EventGenerator()
         self.events.add_listener(FigureMoveListener(self.player.move))
@@ -333,5 +333,7 @@ class ColorsLevel:
         self.tmap.draw()
 
 if __name__ == '__main__':
+    pygame.mixer.music.load("music/allstar.ogg")
+    pygame.mixer.music.play(-1)
     game = Game('data/colors.conf', Colors) #Change to data/colors.conf after creating title screen
     game.run()
