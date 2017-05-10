@@ -42,7 +42,7 @@ class Colors:
         self.screen = screen
         self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
-        self.current_level = 4
+        self.current_level = 2
         self.level_loader = levels
         self.score = 0
 
@@ -126,7 +126,7 @@ class Colors:
             if self.player.lives == 0:
                 deadsound.play()
                 self.events.exit_signalled()
-                self.player.lives = 3
+                self.player.lives = 4
                 self.run()
             else:
                 self.status_box.data['lives'] = self.player.lives
@@ -138,7 +138,7 @@ class Colors:
         """finish movement"""
         if self.player.sprite.finished:
             time.sleep(1)
-            self.complete_level()
+            self.complete_level(self.current_level)
 
 
     def reset_level(self):
@@ -156,11 +156,11 @@ class Colors:
         }
         self.status_box = DictBox(frame, data)
 
-    def complete_level(self):
+    def complete_level(self, current_level):
         print("complete")
         self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
-        self.current_level = 6
+        self.current_level = current_level + 1
         self.level_loader = levels
         self.score = 0
 

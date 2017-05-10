@@ -36,7 +36,7 @@ level1="""####################
 ####################"""
 playerpos1=Vector(1, 8)
 ghostpos1=[Vector(1, 8)]
-ghostspeed1=2
+ghostspeed1=1
 #TODO: TAKE OUT GHOST. GAME WONT INITIALIZE WITHOUT ONE IN THE LEVEL
 
 #level 2, GHOST!
@@ -54,7 +54,7 @@ level2="""
 ##########"""
 playerpos2=Vector(5, 8)
 ghostpos2=[Vector(1, 8)]
-ghostspeed2=2
+ghostspeed2=1
 
 #level 2, Track and Field
 level3="""
@@ -70,7 +70,7 @@ level3="""
 ##########"""
 playerpos3=Vector(5, 8)
 ghostpos3=[Vector(1, 8)]
-ghostspeed3=2
+ghostspeed3=1
 
 #level 4, Cage Match
 level4="""
