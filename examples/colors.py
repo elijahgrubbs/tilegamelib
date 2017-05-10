@@ -256,7 +256,8 @@ class Player:
         if allowedToMove:
             self.sprite.add_move(direction)
             movesound.play()
-        elif blocksound.play()
+        else:
+            blocksound.play()
 
     def update(self):
         """Try eating dots and fruit"""
