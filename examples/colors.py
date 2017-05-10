@@ -126,7 +126,7 @@ class Colors:
             self.player.lives = self.player.lives - 1
             if self.player.lives == 0:
                 self.events.exit_signalled()
-		deadsound.play()
+                deadsound.play()
             else:
                 self.status_box.data['lives'] = self.player.lives
                 self.reset_level()
@@ -275,7 +275,7 @@ class Player:
     def die(self):
         self.buffered_move = None
         self.sprite.path = []
-	damsound.play()
+        damsound.play()
 
 class Ghost:
 
