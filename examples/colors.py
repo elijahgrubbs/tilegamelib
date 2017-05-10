@@ -107,7 +107,6 @@ class Colors:
 
     def check_collision(self, pos):
         if self.player.collision(self.ghosts):
-        # if False:
             self.update_mode = self.update_die
             self.player.die()
             self.collided = True
@@ -125,8 +124,10 @@ class Colors:
             time.sleep(1)
             self.player.lives = self.player.lives - 1
             if self.player.lives == 0:
-                self.events.exit_signalled()
                 deadsound.play()
+                self.events.exit_signalled()
+                self.player.lives = 3
+                self.run()
             else:
                 self.status_box.data['lives'] = self.player.lives
                 self.reset_level()
@@ -156,6 +157,7 @@ class Colors:
         self.status_box = DictBox(frame, data)
 
     def complete_level(self):
+        print("complete")
         self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.current_level = 6
