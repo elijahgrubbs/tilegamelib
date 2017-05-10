@@ -350,7 +350,7 @@ class ColorsLevel:
         return self.ghost_speed
 
 if __name__ == '__main__':
-    pygame.mixer.music.load("music/allstar.ogg")
+    pygame.mixer.music.load("music/menumusic.ogg")
     pygame.mixer.music.play(-1)
     game = Game('data/colors.conf', Colors) #Change to data/colors.conf after creating title screen
     game.run()
