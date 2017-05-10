@@ -16,7 +16,7 @@ import levels
 
 
 pygame.init()
-ccsound=pygame.mixer.Sound("music/colorchange.ogg")
+blocksound=pygame.mixer.Sound("music/colorchange.ogg")
 damsound=pygame.mixer.Sound("music/damage.ogg")
 deadsound=pygame.mixer.Sound("music/dead.ogg")
 startsound=pygame.mixer.Sound("music/gamestart.ogg")
@@ -229,7 +229,6 @@ class Player:
     def set_color(self, color):
         self.color = color
         self.sprite.tile = self.get_sprite_from_table(self.color, self.direction)
-        ccsound.play()
 
     def move(self, direction):
         if not self.sprite.finished:
@@ -257,6 +256,7 @@ class Player:
         if allowedToMove:
             self.sprite.add_move(direction)
             movesound.play()
+        elif blocksound.play()
 
     def update(self):
         """Try eating dots and fruit"""
