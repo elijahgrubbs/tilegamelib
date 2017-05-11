@@ -1,8 +1,8 @@
-
 from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener, FigureColorListener
 from tilegamelib.bar_display import BarDisplay
 from tilegamelib.basic_boxes import DictBox
+from tilegamelib.basic_boxes import ImageBox
 from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move import wait_for_move
@@ -40,7 +40,7 @@ class Colors:
 
     def __init__(self, screen):
         self.screen = screen
-        self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
+        self.frame = Frame(self.screen, Rect(20, 20, 800, 700))
         self.tile_factory = TileFactory('data/colortiles.conf')
         self.current_level = 2
         self.level_loader = levels
@@ -52,6 +52,7 @@ class Colors:
         self.ghosts = []
         self.update_mode = None
         self.status_box = None
+        self.image_box = None
 
         self.create_level()
         self.create_player()
@@ -63,6 +64,9 @@ class Colors:
         self.update_mode = self.update_ingame
 
     def create_level(self):
+        self.otherFrame = Frame(self.screen, Rect(0, 0, 800, 700))
+        self.image_box = ImageBox(self.otherFrame, "data/background.bmp")
+        self.image_box.draw()
         tmap = TiledMap(self.frame, self.tile_factory)
         self.level = ColorsLevel(self.level_loader.getlevel(self.current_level), tmap, self.level_loader.getGhostSpeed(self.current_level))
 
@@ -260,7 +264,6 @@ class Player:
             blocksound.play()
 
     def update(self):
-        """Try eating dots and fruit"""
         if self.sprite.finished and self.buffered_move:
             self.move(self.buffered_move)
             self.buffered_move = None
@@ -353,5 +356,5 @@ class ColorsLevel:
 if __name__ == '__main__':
     pygame.mixer.music.load("music/menumusic.ogg")
     pygame.mixer.music.play(-1)
-    game = Game('data/colors.conf', Colors) #Change to data/colors.conf after creating title screen
+    game = Game('data/colors.conf', Colors)
     game.run()
