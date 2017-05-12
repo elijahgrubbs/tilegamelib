@@ -96,6 +96,7 @@ class Colors:
         self.events.add_listener(FigureMoveListener(self.unstuck_ghosts))
         self.events.add_listener(FigureColorListener(self.player.set_color))
         self.events.add_listener(ExitListener(self.complete_level))
+        self.events.add_listener(ExitListener(self.events.exit_signalled))
         with draw_timer(self, self.events):
             self.events.event_loop()
 
@@ -121,6 +122,7 @@ class Colors:
                 self.update_mode = self.update_level_complete
             elif field == 's':
                 self.level.remove_soul(pos)
+                self.score += 100
 
     def update_die(self):
         """finish movements"""
@@ -134,6 +136,7 @@ class Colors:
                 self.run()
             else:
                 self.status_box.data['lives'] = self.player.lives
+                self.score -= 50
                 self.reset_level()
                 self.events.empty_event_queue()
                 self.update_mode = self.update_ingame
@@ -156,17 +159,19 @@ class Colors:
         frame = Frame(self.screen, Rect(700, 20, 200, 50))
         data = {
             'lives': 3,
-            'level': 1,
+            'level': self.current_level - 1,
         }
         self.status_box = DictBox(frame, data)
 
     def complete_level(self, current_level):
         print("complete")
+        self.current_level = current_level + 1
+        if self.current_level > 7 :
+            pygame.quit()
+            exit()
         self.frame = Frame(self.screen, Rect(32, 32, 720, 720))
         self.tile_factory = TileFactory('data/colortiles.conf')
-        self.current_level = current_level + 1
         self.level_loader = levels
-        self.score = 0
 
         self.level = None
         self.player = None
@@ -194,7 +199,6 @@ class Player:
         tile = tile_factory.get('p_red_d')
         self.sprite = Sprite(frame, tile, pos, speed=4)
         self.eaten = None
-        self.score = 0
         self.buffered_move = None
 
         self.color = RED
