@@ -1,3 +1,6 @@
+#Authors: Curtis ???, Steve Sanchez
+#Email: ??? | sanchez25@csu.fullerton.edu
+
 from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener, FigureColorListener
 from tilegamelib.bar_display import BarDisplay
