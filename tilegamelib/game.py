@@ -2,7 +2,6 @@
 from .screen import Screen
 from tilegamelib import Vector
 from tilegamelib.dialogs.title_screen import show_title_screen
-from tilegamelib.dialogs.highscores import show_highscores
 from tilegamelib.menu import VERTICAL_MOVES
 from pygame import Rect
 import os
@@ -34,12 +33,7 @@ class Game:
         game = self.game_class(self.screen)
         game.run()
         if self.config['HIGHSCORES']:
-            show_highscores(game.score, self.screen,
-                rect=self.config['HIGHSCORE_RECT'],
-                filename=self.config['HIGHSCORE_FILE'],
-                image=self.config['HIGHSCORE_IMAGE'],
-                textpos=self.config['HIGHSCORE_TEXTPOS'],
-            )
+            game.exit()
 
     def exit(self):
         self._exit = True
