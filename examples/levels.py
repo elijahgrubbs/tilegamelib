@@ -1,3 +1,6 @@
+#Authors: Curtis ???, Andrew Pham
+#Email: ??? | ????
+
 #file with all the maps in it
 #functions:
 #levels.getlevel(levelnumber)
