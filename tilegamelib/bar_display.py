@@ -40,8 +40,8 @@ class BarDisplay:
 
 
 if __name__ == '__main__':
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
-    tile_factory = TileFactory('../examples/data/tiles.conf')
+    screen = Screen(Vector(800,550), '../lightsouls/data/background.png')
+    tile_factory = TileFactory('../lightsouls/data/tiles.conf')
     frame = Frame(screen, Rect(96, 64, 640, 32))
     bananas = BarDisplay(frame, tile_factory, 0, 'b', False)
     frame = Frame(screen, Rect(64, 64, 32, 320))

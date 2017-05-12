@@ -98,8 +98,7 @@ class Colors:
         self.events.add_listener(FigureMoveListener(self.player.move))
         self.events.add_listener(FigureMoveListener(self.unstuck_ghosts))
         self.events.add_listener(FigureColorListener(self.player.set_color))
-        self.events.add_listener(ExitListener(self.complete_level))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
+        self.events.add_listener(ExitListener(self.exit_game))
         with draw_timer(self, self.events):
             self.events.event_loop()
 
@@ -167,7 +166,6 @@ class Colors:
         self.status_box = DictBox(frame, data)
 
     def complete_level(self, current_level):
-        print("complete")
         self.current_level = current_level + 1
         if self.current_level > 7 :
             pygame.quit()
@@ -193,6 +191,9 @@ class Colors:
         self.update_mode = self.update_ingame
         self.run()
 
+    def exit_game(self):
+        pygame.quit()
+        exit()
 
 class Player:
 

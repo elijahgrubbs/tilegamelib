@@ -44,9 +44,9 @@ class AnimatedTile:
 
 
 if __name__ == '__main__':
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
+    screen = Screen(Vector(800,550), '../lightsouls/data/background.png')
     frame = Frame(screen, Rect(64, 64, 400, 320))
-    tile_factory = TileFactory('../examples/data/tiles.conf')
+    tile_factory = TileFactory('../lightsouls/data/tiles.conf')
     tiles = [tile_factory.get(x) for x in "abcdefgh"]
     ani = AnimatedTile(tiles)
     

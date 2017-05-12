@@ -79,9 +79,9 @@ class Sprite:
 
 
 if __name__ == '__main__':
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
+    screen = Screen(Vector(800,550), '../lightsouls/data/background.png')
     frame = Frame(screen, Rect(64, 64, 400, 320))
-    tile_factory = TileFactory('../examples/data/tiles.conf')
+    tile_factory = TileFactory('../lightsouls/data/tiles.conf')
 
     sprite = Sprite(frame, tile_factory.get('#'), Vector(3, 3))
     sprite.draw()

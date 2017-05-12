@@ -5,7 +5,7 @@ import pygame
 from .util import BASE_PATH
 
 pygame.font.init()
-DEMIBOLD_BIG = pygame.font.Font(BASE_PATH + '/../examples/data/LucidaSansDemiBold.ttf', 20)
+DEMIBOLD_BIG = pygame.font.Font(BASE_PATH + '/../lightsouls/data/LucidaSansDemiBold.ttf', 20)
 DEFAULT_COLOR = GREEN = (128, 255, 128, 0)
 
 

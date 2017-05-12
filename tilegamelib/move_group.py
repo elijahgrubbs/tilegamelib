@@ -50,9 +50,9 @@ if __name__ == '__main__':
 #..ff..gg..#
 ############"""
 
-    screen = Screen(Vector(800, 550), '../examples/data/background.png')
+    screen = Screen(Vector(800, 550), '../lightsouls/data/background.png')
     frame = Frame(screen, Rect(64, 64, 400, 320))
-    tile_factory = TileFactory('../examples/data/tiles.conf')
+    tile_factory = TileFactory('../lightsouls/data/tiles.conf')
     tm = TiledMap(frame, tile_factory)
 
     tm.set_map(fruitmap)
