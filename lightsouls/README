@@ -1,0 +1,50 @@
+
+CPSC 386 Project #2
+
+# lightsouls
+
+Our game Light Souls is a 2D tile based puzzler, with speed and timed based elements.
+You control a lone space traveler who stumbled upon a world of bright neon colored floors,
+organized in a peculiar grid based pattern.. However, you soon discover you are not alone
+and you need to reach the exit before the indigenous creatures catch up to you. Can you escape in time?
+
+Created by:
+    Curtis Laudenslayer curtslayer@gmail.com
+    Steve Sanchez
+    Andrew Pham
+    Elijah Grubbs
+
+## Description
+
+The objective of the game is to traverse a system of colored tiles, across a 2 dimensional grid, and to collect
+a series of souls before reaching the exit tile of the game. The catch however, in order to traverse the colored
+tiles the user must press a series of 3 buttons (a, s, d) which each correspond to a primary color (red, yellow, blue)
+and indicate a direction (using the arrow keys) to move across the level.
+
+## External Requirements:
+
+    If you don’t have pip installed, please follow this link: https://pip.pypa.io/en/stable/installing/
+
+## Installation for development
+
+### 1. Installing pygame
+
+    Extract zip folder
+        In the extracted folder root directory run setup.py
+        Enter the following commands in the same directory:
+        pip install pygame
+        pip install --editable .
+        Navigate to the lightsouls folder in the same directory
+            Run: python colors.py
+
+## Rules
+
+    Reach the portal tile without dying.
+
+## Features
+
+    Player color change mechanics, awesome sounds, original artwork.
+
+## Bugs
+
+    None?
