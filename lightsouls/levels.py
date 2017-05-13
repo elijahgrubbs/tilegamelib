@@ -1,5 +1,5 @@
-#Authors: Curtis ???, Andrew Pham
-#Email: ??? | andrewpham@csu.fullerton.edu
+#Authors: Curtis Laudenslayer, Andrew Pham
+#Email: curtslayer@gmail.com | andrewpham@csu.fullerton.edu
 
 #file with all the maps in it
 #functions:
