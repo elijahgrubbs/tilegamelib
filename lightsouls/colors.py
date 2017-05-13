@@ -133,6 +133,7 @@ class Colors:
             self.player.lives = self.player.lives - 1
             if self.player.lives == 0:
                 deadsound.play()
+                self.complete_level(1)
                 self.events.exit_signalled()
                 self.player.lives = 4
                 self.run()
