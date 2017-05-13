@@ -1,5 +1,5 @@
-#Authors: Curtis ???, Steve Sanchez, Andrew Pham
-#Email: ??? | sanchez25@csu.fullerton.edu | andrewpham@csu.fullerton.edu
+#Authors: Curtis Laudenslayer, Steve Sanchez, Andrew Pham
+#Email: curtslayer@gmail.com | sanchez25@csu.fullerton.edu | andrewpham@csu.fullerton.edu
 
 from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener, FigureColorListener
